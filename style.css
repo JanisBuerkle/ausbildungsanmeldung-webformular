@@ -1,0 +1,111 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 30px;
+}
+
+.container {
+    max-width: 600px;
+    margin: auto;
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+}
+
+h1 {
+    text-align: center;
+}
+
+.feld {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 18px;
+    font-family: 'Inter', sans-serif;
+}
+
+.feld label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+}
+
+.feld select {
+    padding: 12px 14px;
+    font-size: 15px;
+    border-radius: 10px;
+    border: 2px solid #ddd;
+    background: #fff;
+    transition: 0.2s ease;
+    outline: none;
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='12' width='12' viewBox='0 0 320 512' xmlns='http://www.w3.org/2000/svg'><path d='M31.3 192h257.4c28.4 0 42.7 34.5 22.6 54.6L182.6 375.4c-12.5 12.5-32.8 12.5-45.3 0L8.7 246.6C-11.4 226.5 2.9 192 31.3 192z'/></svg>");
+    background-repeat: no-repeat;
+    background-size: 14px;
+    background-position: right 14px center;
+}
+
+.feld select:hover {
+    border-color: #aaa;
+}
+
+.feld select:focus {
+    border-color: #4a8af4;
+    box-shadow: 0 0 0 3px rgba(74, 138, 244, 0.2);
+}
+
+
+.feld input {
+    padding: 10px;
+    border: 1px solid #aaa;
+    border-radius: 5px;
+}
+
+.feld input.error {
+    border-color: red;
+    background: #ffe5e5;
+}
+
+.checkbox {
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+
+button {
+    padding: 12px;
+    width: 100%;
+    border: none;
+    margin-top: 10px;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#checkBtn {
+    background: #0077cc;
+    color: white;
+}
+
+#submitBtn {
+    background: #28a745;
+    color: white;
+}
+
+#submitBtn:disabled {
+    background: #999;
+    cursor: not-allowed;
+}
+
+#statusAusgabe {
+    margin-top: 20px;
+    padding: 15px;
+}
+
+#info {
+    font-size: 14px;
+    text-align: right;
+    color: #595959;
+    font-weight: normal;
+}

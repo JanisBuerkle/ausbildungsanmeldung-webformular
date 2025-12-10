@@ -42,6 +42,9 @@ Zustimmen zum speichern der daten*: Ja/Nein
 
 
 
+CREATE database IF NOT EXISTS ausbildungs_anmeldung;
+
+
 -- =========================================================
 -- 1) Tabelle: Ausbildungsberufe
 -- =========================================================

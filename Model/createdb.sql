@@ -22,7 +22,7 @@ CREATE TABLE ausbildungs_anmeldung.ausbilder (
     ausbilder_id INT AUTO_INCREMENT PRIMARY KEY,
     betrieb_id INT NOT NULL,
     name VARCHAR(255) NOT NULL,
-    geschlecht ENUM('m','w') NOT NULL,
+    geschlecht ENUM('m','w','d') NOT NULL,
     email VARCHAR(255) NOT NULL,
     telefon VARCHAR(50) NOT NULL,
     FOREIGN KEY (betrieb_id) REFERENCES betriebe(betrieb_id)

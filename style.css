@@ -21,7 +21,6 @@ h1 {
     flex-direction: column;
     gap: 6px;
     margin-bottom: 18px;
-    font-family: 'Inter', sans-serif;
 }
 
 .feld label {
@@ -30,14 +29,15 @@ h1 {
     color: #333;
 }
 
-.feld select {
-    padding: 12px 14px;
+.feld select, .feld input {
+    padding: 10px;
     font-size: 15px;
-    border-radius: 10px;
-    border: 2px solid #ddd;
-    background: #fff;
-    transition: 0.2s ease;
+    border-radius: 5px;
+    border: 1px solid #aaa;
     outline: none;
+}
+
+.feld select {
     cursor: pointer;
     appearance: none;
     background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='12' width='12' viewBox='0 0 320 512' xmlns='http://www.w3.org/2000/svg'><path d='M31.3 192h257.4c28.4 0 42.7 34.5 22.6 54.6L182.6 375.4c-12.5 12.5-32.8 12.5-45.3 0L8.7 246.6C-11.4 226.5 2.9 192 31.3 192z'/></svg>");
@@ -46,23 +46,12 @@ h1 {
     background-position: right 14px center;
 }
 
-.feld select:hover {
-    border-color: #aaa;
-}
-
 .feld select:focus {
     border-color: #4a8af4;
     box-shadow: 0 0 0 3px rgba(74, 138, 244, 0.2);
 }
 
-
-.feld input {
-    padding: 10px;
-    border: 1px solid #aaa;
-    border-radius: 5px;
-}
-
-.feld input.error {
+.feld input.error, .feld select.error {
     border-color: red;
     background: #ffe5e5;
 }
@@ -101,10 +90,11 @@ button {
 #statusAusgabe {
     margin-top: 20px;
     padding: 15px;
+    font-size: 14px;
 }
 
 #info {
-    font-size: 14px;
+    font-size: 12px;
     text-align: right;
     color: #595959;
     font-weight: normal;

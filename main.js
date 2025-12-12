@@ -1,79 +1,61 @@
+const form = document.getElementById("anmeldeForm");
+const submitBtn = document.getElementById("submitBtn");
+const statusBox = document.getElementById("statusAusgabe");
+const checkBtn = document.getElementById("checkBtn");
+
 const felder = {
-    vorname: document.getElementById("vorname"),
-    nachname: document.getElementById("nachname"),
-    email: document.getElementById("email"),
-    plz: document.getElementById("plz"),
+    ausbildungsberuf: document.getElementById("ausbildungsberuf"),
+    ausbildungsbetrieb: document.getElementById("ausbildungsbetrieb"),
+    ausbildername: document.getElementById("ausbildername"),
+    ausbildergeschlecht: document.getElementById("ausbildergeschlecht"),
+    ausbilderemail: document.getElementById("ausbilderemail"),
     zustimmung: document.getElementById("zustimmung")
 };
 
-const submitBtn = document.getElementById("submitBtn");
-const statusBox = document.getElementById("statusAusgabe");
-
-// Validierungsfunktionen
-function checkName(v) {
-    return /^[A-Za-zÄÖÜäöüß\s-]+$/.test(v.trim());
+function checkText(value) {
+    return value.trim() !== "";
 }
 
-function checkEmail(v) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+function checkEmail(value) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 }
 
-function checkPLZ(v) {
-    return /^[0-9]{5}$/.test(v);
+function checkSelect(value) {
+    return value !== "waehlen";
 }
 
-// Prüfen aller Felder
 function validate() {
     let allesOk = true;
 
-    // Vorname
-    if (!checkName(felder.vorname.value)) {
-        markError(felder.vorname);
-        allesOk = false;
-    } else unmarkError(felder.vorname);
+    if (!checkSelect(felder.ausbildungsberuf.value)) { felder.ausbildungsberuf.classList.add("error"); allesOk = false; } 
+    else { felder.ausbildungsberuf.classList.remove("error"); }
 
-    // Nachname
-    if (!checkName(felder.nachname.value)) {
-        markError(felder.nachname);
-        allesOk = false;
-    } else unmarkError(felder.nachname);
+    if (!checkText(felder.ausbildungsbetrieb.value)) { felder.ausbildungsbetrieb.classList.add("error"); allesOk = false; } 
+    else { felder.ausbildungsbetrieb.classList.remove("error"); }
 
-    // Email
-    if (!checkEmail(felder.email.value)) {
-        markError(felder.email);
-        allesOk = false;
-    } else unmarkError(felder.email);
+    if (!checkText(felder.ausbildername.value)) { felder.ausbildername.classList.add("error"); allesOk = false; } 
+    else { felder.ausbildername.classList.remove("error"); }
 
-    // PLZ
-    if (!checkPLZ(felder.plz.value)) {
-        markError(felder.plz);
-        allesOk = false;
-    } else unmarkError(felder.plz);
+    if (!checkSelect(felder.ausbildergeschlecht.value)) { felder.ausbildergeschlecht.classList.add("error"); allesOk = false; } 
+    else { felder.ausbildergeschlecht.classList.remove("error"); }
 
-    // Absenden erlauben?
+    if (!checkEmail(felder.ausbilderemail.value)) { felder.ausbilderemail.classList.add("error"); allesOk = false; } 
+    else { felder.ausbilderemail.classList.remove("error"); }
+
     submitBtn.disabled = !(allesOk && felder.zustimmung.checked);
+    return allesOk;
 }
 
-// Fehler markieren
-function markError(el) {
-    el.classList.add("error");
-}
-
-function unmarkError(el) {
-    el.classList.remove("error");
-}
-
-// „Was fehlt noch?“ Button
-document.getElementById("checkBtn").addEventListener("click", () => {
+checkBtn.addEventListener("click", () => {
     validate();
-
     let fehlermeldungen = [];
 
-    if (!checkName(felder.vorname.value)) fehlermeldungen.push("Vorname ungültig");
-    if (!checkName(felder.nachname.value)) fehlermeldungen.push("Nachname ungültig");
-    if (!checkEmail(felder.email.value)) fehlermeldungen.push("E-Mail ungültig");
-    if (!checkPLZ(felder.plz.value)) fehlermeldungen.push("PLZ ungültig");
-    if (!felder.zustimmung.checked) fehlermeldungen.push("Zustimmung fehlt");
+    if (!checkSelect(felder.ausbildungsberuf.value)) fehlermeldungen.push("Ausbildungsberuf auswählen");
+    if (!checkText(felder.ausbildungsbetrieb.value)) fehlermeldungen.push("Ausbildungsbetrieb fehlt");
+    if (!checkText(felder.ausbildername.value)) fehlermeldungen.push("Ausbildername fehlt");
+    if (!checkSelect(felder.ausbildergeschlecht.value)) fehlermeldungen.push("Ausbildergeschlecht auswählen");
+    if (!checkEmail(felder.ausbilderemail.value)) fehlermeldungen.push("Ausbilder E-Mail ungültig");
+    if (!felder.zustimmung.checked) fehlermeldungen.push("Zustimmung zur Datenspeicherung fehlt");
 
     if (fehlermeldungen.length === 0) {
         statusBox.style.color = "green";
@@ -84,11 +66,7 @@ document.getElementById("checkBtn").addEventListener("click", () => {
     }
 });
 
-// Live-Validierung
 Object.values(felder).forEach(feld => {
-    if (feld.type !== "checkbox") {
-        feld.addEventListener("input", validate);
-    } else {
-        feld.addEventListener("change", validate);
-    }
+    if (feld.type === "checkbox") feld.addEventListener("change", validate);
+    else feld.addEventListener("input", validate);
 });

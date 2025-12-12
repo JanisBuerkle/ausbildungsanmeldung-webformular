@@ -9,12 +9,14 @@
 <body>
     <div class="container">
         <h1>Anmeldeformular Ausbildung</h1>
+        <p>Formularfelder mit * sind Pflichfelder.</p>
+        <p>Bitte beachten Sie die Hilfe-Hinweise unterhalb der Eingabefelder.</p>
 
         <form id="anmeldeForm" method="post" action="anmeldung.php" novalidate>
 
             <h2>Anmeldung mit Ausbildungsvertrag</h2>
             <div class="feld">
-                <label for="ausbildungsberuf">Ausbildungsberuf</label>
+                <label for="ausbildungsberuf">Ausbildungsberuf *</label>
                 <select id="ausbildungsberuf" name="ausbildungsberuf">
                     <option value="waehlen">Bitte wählen</option>
                     <option value="elektroniker">Elektroniker/in-Energie-/Gebäudetechnik</option>
@@ -27,19 +29,19 @@
             <h2>Informationen zum Ausbildungsbetrieb</h2>
 
             <div class="feld">
-                <label for="ausbildungsbetrieb">Name des Ausbildungsbetriebs</label>
+                <label for="ausbildungsbetrieb">Name des Ausbildungsbetriebs *</label>
                 <input type="text" id="ausbildungsbetrieb" name="ausbildungsbetrieb">
                 <label id="info" for="ausbildername">Bitte geben Sie hier den Vollständigen Namen des Betriebs ein. Pflichtfeld. &#9432;</label>
             </div>
 
             <div class="feld">
-                <label for="ausbildername">Ausbilder Name</label>
+                <label for="ausbildername">Ausbilder Name *</label>
                 <input type="text" id="ausbildername" name="ausbildername">
                 <label id="info" for="ausbildername">Bitte geben Sie hier den Vor- und Namen des/der Ausbilders/in ein. Pflichtfeld. &#9432;</label>
             </div>
 
             <div class="feld">
-                <label for="ausbildergeschlecht">Ausbilder Geschlecht</label>
+                <label for="ausbildergeschlecht">Ausbilder Geschlecht *</label>
                 <select id="ausbildergeschlecht" name="ausbildergeschlecht">
                     <option value="waehlen">Bitte wählen</option>
                     <option value="maennlich">Männlich</option>
@@ -50,10 +52,85 @@
             </div>
 
             <div class="feld">
-                <label for="ausbilderemail">Ausbilder E-Mail</label>
+                <label for="ausbilderemail">Ausbilder E-Mail *</label>
                 <input type="email" id="ausbilderemail" name="ausbilderemail">
+                <input type="email" id="ausbilderemailwdh" name="ausbilderemailwdh"> <!-- //ChatGPT Programmiere das es nur geht wen nes die gleiche email ist -->
                 <label id="info" for="ausbilderemail">Bitte geben Sie hier die E-Mail-Adresse des/der Ausbilders/in ein. Pflichtfeld. &#9432;</label>
             </div>
+
+            <div class="feld">
+                <label for="ausbildertelefon">Ausbilder Telefon *</label>
+                <input type="text" id="ausbildertelefon" name="ausbildertelefon">
+                <label id="info" for="ausbildertelefon">Bitte geben Sie hier die Telefonnummer des/der Ausbilders/in ein (Bsp. +49 7161 123456). Pflichtfeld. &#9432;</label>
+            </div>
+            
+            <div class="feld">
+                <label for="ausbildungsbeginn">Ausbildungsbeginn *</label>
+                <input type="month" id="ausbildungsbeginn" name="ausbildungsbeginn">
+                <label id="info" for="ausbildungsbeginn">Schreibweise MM.JJJJ. Pflichtfeld. &#9432;</label>
+            </div>
+
+            <div class="feld">
+                <label for="ausbildungsende">Ausbildungsende *</label>
+                <input type="month" id="ausbildungsende" name="ausbildungsende">
+                <label id="info" for="ausbildungsende">Schreibweise MM.JJJJ. Pflichtfeld. &#9432;</label>
+            </div>
+
+            <div class="feld">
+                <label for="ausbildungsdauer">Ausbildungsdauer *</label>
+                <select id="ausbildungsdauer" name="ausbildungsdauer">
+                    <option value="waehlen">Bitte wählen</option>
+                    <option value="1">1-jährig</option>
+                    <option value="2">2-jährig</option>
+                    <option value="2,5">2,5-jährig</option>
+                    <option value="3">3-jährig</option>
+                    <option value="3,5">3,5-jährig</option>
+                    <option value="praktikant">nur für Praktikant*in</option>
+                </select>
+                <label id="info" for="ausbildergeschlecht">Bitte geben Sie hier das Geschlecht des/der Ausbilders/in ein. Pflichtfeld. &#9432;</label>
+            </div>
+
+            <div class="feld">
+                <label for="selbeklasse">Sollen Ihre Auszubildende in dieselbe Klasse?</label>
+                <select id="selbeklasse" name="selbeklasse">
+                    <option value="waehlen">Bitte wählen</option>
+                    <option value="ja">Ja</option>
+                    <option value="nein">Nein</option>
+                </select>
+            </div>
+
+            <h2>Anmeldedaten</h2>
+            <p>Felder mit Sternchen (*) sind Pflichtfelder.</p>
+            <p>Bitte geben Sie zunächst an, ob der Auszubildende bereits Schüler des Beruflichen Schulzentrums war.</p>
+
+            <h2>Persönliche Daten (Auszubildende)</h2>
+
+            <div class="feld">
+                <label for="familienname">Familienname *</label>
+                <input type="text" id="familienname" name="familienname">
+                <label id="info" for="familienname">Geben Sie hier bitte den Nachnamen der/des Auszubildenden ein. Pflichtfeld. &#9432;</label>
+            </div>
+
+            <div class="feld">
+                <label for="vorname">Vorname *</label>
+                <input type="text" id="vorname" name="vorname">
+                <label id="info" for="vorname">Geben Sie hier bitte den Vornamen der/des Auszubildenden ein. Pflichtfeld. &#9432;</label>
+            </div>
+
+            <div class="feld">
+                <label for="warbsz">Hat der/die Auszubildende im letzten Schuljahr am Beruflichen Schulzentrum Bietigheim-Bissingen die einjährige Berufsfachschule besucht? *</label>
+                <input type="text" id="warbsz" name="warbsz">
+            </div>
+
+            <div class="feld">
+                <label for="geburtsdatum">Geburtsdatum *</label>
+                <input type="date" id="geburtsdatum" name="geburtsdatum">
+                <label id="info" for="geburtsdatum">Geben Sie hier bitte das Geburtsdatum der/des Auszubildenden im Format TT.MM.JJJJ ein. Pflichtfeld. &#9432;</label>
+            </div>
+
+
+
+
 
             <div class="feld checkbox">
                 <input type="checkbox" id="zustimmung">

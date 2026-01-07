@@ -73,7 +73,6 @@ CREATE TABLE ausbildungs_anmeldung.eingaben_meta (
     meta_id INT AUTO_INCREMENT PRIMARY KEY,
     azubi_id INT NOT NULL,
     email_bestaetigung VARCHAR(255) NOT NULL,
-    bestaetigungslink VARCHAR(500) NOT NULL,
     datenschutz_zustimmung BOOLEAN NOT NULL,
     FOREIGN KEY (azubi_id) REFERENCES auszubildende(azubi_id)
 );

@@ -2,6 +2,7 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Anmeldeformular</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -9,7 +10,7 @@
 <body>
     <div class="container">
         <h1>Anmeldeformular Ausbildung</h1>
-        <p>Formularfelder mit * sind Pflichfelder.</p>
+        <p>Formularfelder mit * sind Pflichtfelder.</p>
         <p>Bitte beachten Sie die Hilfe-Hinweise unterhalb der Eingabefelder.</p>
 
         <form id="anmeldeForm" method="post" action="anmeldung.php" novalidate>
@@ -17,11 +18,11 @@
             <h2>Anmeldung mit Ausbildungsvertrag</h2>
             <div class="feld">
                 <label for="ausbildungsberuf">Ausbildungsberuf *</label>
-                <select id="ausbildungsberuf" name="ausbildungsberuf">
-                    <option value="waehlen">Bitte wählen</option>
-                    <option value="elektroniker">Elektroniker/in-Energie-/Gebäudetechnik</option>
-                    <option value="fianwendung">Fachinformatiker/in-Anwendungsentwicklung</option>
-                    <option value="fisystem">Fachinformatiker/in-Systemintegration</option>
+                <select id="ausbildungsberuf" name="ausbildungsberuf" aria-describedby="info-ausbildungsberuf">
+                    <option value="" disabled selected hidden>Bitte wählen</option>
+                    <option value="elektroniker">Elektroniker/in Energie- und Gebäudetechnik</option>
+                    <option value="fianwendung">Fachinformatiker/in Anwendungsentwicklung</option>
+                    <option value="fisystem">Fachinformatiker/in Systemintegratio</option>
                     <option value="mechatroniker">Mechatroniker/in</option>
                 </select>
             </div>
@@ -30,56 +31,56 @@
 
             <div class="feld">
                 <label for="ausbildungsbetrieb">Name des Ausbildungsbetriebs *</label>
-                <input type="text" id="ausbildungsbetrieb" name="ausbildungsbetrieb">
-                <label id="info" for="ausbildername">Bitte geben Sie hier den Vollständigen Namen des Betriebs ein. Pflichtfeld. &#9432;</label>
+                <input type="text" id="ausbildungsbetrieb" name="ausbildungsbetrieb" aria-describedby="info-ausbildungsbetrieb">
+                <p class="info" id="info-ausbildungsbetrieb">Bitte geben Sie hier den vollständigen Namen des Betriebs ein. Pflichtfeld. &#9432;</p>
             </div>
 
             <div class="feld">
                 <label for="ausbildername">Ausbilder Name *</label>
-                <input type="text" id="ausbildername" name="ausbildername">
-                <label id="info" for="ausbildername">Bitte geben Sie hier den Vor- und Namen des/der Ausbilders/in ein. Pflichtfeld. &#9432;</label>
+                <input type="text" id="ausbildername" name="ausbildername" aria-describedby="info-ausbildername">
+                <p class="info" id="info-ausbildername">Bitte geben Sie hier den Vor- und Nachnamen des/der Ausbilders/in ein. Pflichtfeld. &#9432;</p>
             </div>
 
             <div class="feld">
                 <label for="ausbildergeschlecht">Ausbilder Geschlecht *</label>
-                <select id="ausbildergeschlecht" name="ausbildergeschlecht">
-                    <option value="waehlen">Bitte wählen</option>
+                <select id="ausbildergeschlecht" name="ausbildergeschlecht" aria-describedby="info-ausbildergeschlecht">
+                    <option value="" disabled selected hidden>Bitte wählen</option>
                     <option value="maennlich">Männlich</option>
                     <option value="weiblich">Weiblich</option>
                     <option value="divers">Divers</option>
                 </select>
-                <label id="info" for="ausbildergeschlecht">Bitte geben Sie hier das Geschlecht des/der Ausbilders/in ein. Pflichtfeld. &#9432;</label>
+                <p class="info" id="info-ausbildergeschlecht">Bitte geben Sie hier das Geschlecht des/der Ausbilders/in ein. Pflichtfeld. &#9432;</p>
             </div>
 
             <div class="feld">
                 <label for="ausbilderemail">Ausbilder E-Mail *</label>
-                <input type="email" id="ausbilderemail" name="ausbilderemail">
-                <input type="email" id="ausbilderemailwdh" name="ausbilderemailwdh"> <!-- //ChatGPT Programmiere das es nur geht wen nes die gleiche email ist -->
-                <label id="info" for="ausbilderemail">Bitte geben Sie hier die E-Mail-Adresse des/der Ausbilders/in ein. Pflichtfeld. &#9432;</label>
+                <input type="email" id="ausbilderemail" name="ausbilderemail" aria-describedby="info-ausbilderemail" inputmode="email">
+                <input type="email" id="ausbilderemailwdh" name="ausbilderemailwdh" placeholder="Ausbilder Email wiederholen..." aria-label="Ausbilder Email wiederholen" inputmode="email">
+                <p class="info" id="info-ausbilderemail">Bitte geben Sie hier die E-Mail-Adresse des/der Ausbilders/in ein. Pflichtfeld. &#9432;</p>
             </div>
 
             <div class="feld">
                 <label for="ausbildertelefon">Ausbilder Telefon *</label>
-                <input type="text" id="ausbildertelefon" name="ausbildertelefon">
-                <label id="info" for="ausbildertelefon">Bitte geben Sie hier die Telefonnummer des/der Ausbilders/in ein (Bsp. +49 7161 123456). Pflichtfeld. &#9432;</label>
+                <input type="tel" id="ausbildertelefon" name="ausbildertelefon" aria-describedby="info-ausbildertelefon" inputmode="tel">
+                <p class="info" id="info-ausbildertelefon">Bitte geben Sie hier die Telefonnummer des/der Ausbilders/in ein (Bsp. +49 7161 123456). Pflichtfeld. &#9432;</p>
             </div>
-            
+
             <div class="feld">
                 <label for="ausbildungsbeginn">Ausbildungsbeginn *</label>
-                <input type="month" id="ausbildungsbeginn" name="ausbildungsbeginn">
-                <label id="info" for="ausbildungsbeginn">Schreibweise MM.JJJJ. Pflichtfeld. &#9432;</label>
+                <input type="month" id="ausbildungsbeginn" name="ausbildungsbeginn" aria-describedby="info-ausbildungsbeginn">
+                <p class="info" id="info-ausbildungsbeginn">Schreibweise MM.JJJJ. Pflichtfeld. &#9432;</p>
             </div>
 
             <div class="feld">
                 <label for="ausbildungsende">Ausbildungsende *</label>
-                <input type="month" id="ausbildungsende" name="ausbildungsende">
-                <label id="info" for="ausbildungsende">Schreibweise MM.JJJJ. Pflichtfeld. &#9432;</label>
+                <input type="month" id="ausbildungsende" name="ausbildungsende" aria-describedby="info-ausbildungsende">
+                <p class="info" id="info-ausbildungsende">Schreibweise MM.JJJJ. Pflichtfeld. &#9432;</p>
             </div>
 
             <div class="feld">
                 <label for="ausbildungsdauer">Ausbildungsdauer *</label>
-                <select id="ausbildungsdauer" name="ausbildungsdauer">
-                    <option value="waehlen">Bitte wählen</option>
+                <select id="ausbildungsdauer" name="ausbildungsdauer" aria-describedby="info-ausbildungsdauer">
+                    <option value="" disabled selected hidden>Bitte wählen</option>
                     <option value="1">1-jährig</option>
                     <option value="2">2-jährig</option>
                     <option value="2,5">2,5-jährig</option>
@@ -87,13 +88,13 @@
                     <option value="3,5">3,5-jährig</option>
                     <option value="praktikant">nur für Praktikant*in</option>
                 </select>
-                <label id="info" for="ausbildergeschlecht">Bitte geben Sie hier das Geschlecht des/der Ausbilders/in ein. Pflichtfeld. &#9432;</label>
+                <p class="info" id="info-ausbildungsdauer">Bei Praktikant*innen bitte die Dauer über das Feld "Ausbildungsbeginn" und "-ende" angeben. Pflichtfeld. &#9432;</p>
             </div>
 
             <div class="feld">
-                <label for="selbeklasse">Sollen Ihre Auszubildende in dieselbe Klasse?</label>
-                <select id="selbeklasse" name="selbeklasse">
-                    <option value="waehlen">Bitte wählen</option>
+                <label for="selbeKlasse">Sollen Ihre Auszubildenden in dieselbe Klasse?</label>
+                <select id="selbeKlasse" name="selbeKlasse">
+                    <option value="" disabled selected hidden>Bitte wählen</option>
                     <option value="ja">Ja</option>
                     <option value="nein">Nein</option>
                 </select>
@@ -107,41 +108,59 @@
 
             <div class="feld">
                 <label for="familienname">Familienname *</label>
-                <input type="text" id="familienname" name="familienname">
-                <label id="info" for="familienname">Geben Sie hier bitte den Nachnamen der/des Auszubildenden ein. Pflichtfeld. &#9432;</label>
+                <input type="text" id="familienname" name="familienname" aria-describedby="info-familienname">
+                <p class="info" id="info-familienname">Geben Sie hier bitte den Nachnamen der/des Auszubildenden ein. Pflichtfeld. &#9432;</p>
             </div>
 
             <div class="feld">
                 <label for="vorname">Vorname *</label>
-                <input type="text" id="vorname" name="vorname">
-                <label id="info" for="vorname">Geben Sie hier bitte den Vornamen der/des Auszubildenden ein. Pflichtfeld. &#9432;</label>
+                <input type="text" id="vorname" name="vorname" aria-describedby="info-vorname">
+                <p class="info" id="info-vorname">Geben Sie hier bitte den Vornamen der/des Auszubildenden ein. Pflichtfeld. &#9432;</p>
             </div>
 
             <div class="feld">
                 <label for="warbsz">Hat der/die Auszubildende im letzten Schuljahr am Beruflichen Schulzentrum Bietigheim-Bissingen die einjährige Berufsfachschule besucht? *</label>
-                <input type="text" id="warbsz" name="warbsz">
+                <select id="warbsz" name="warbsz">
+                    <option value="" disabled selected hidden>Bitte wählen</option>
+                    <option value="ja">Ja</option>
+                    <option value="nein">Nein</option>
+                </select>
             </div>
 
             <div class="feld">
                 <label for="geburtsdatum">Geburtsdatum *</label>
-                <input type="date" id="geburtsdatum" name="geburtsdatum">
-                <label id="info" for="geburtsdatum">Geben Sie hier bitte das Geburtsdatum der/des Auszubildenden im Format TT.MM.JJJJ ein. Pflichtfeld. &#9432;</label>
+                <input type="date" id="geburtsdatum" name="geburtsdatum" aria-describedby="info-geburtsdatum">
+                <p class="info" id="info-geburtsdatum">Geben Sie hier bitte das Geburtsdatum der/des Auszubildenden im Format TT.MM.JJJJ ein. Pflichtfeld. &#9432;</p>
             </div>
 
+            <h2>Was sonst noch wichtig ist</h2>
 
+            <div class="feld">
+                <label for="wichtig">Hier können Sie uns weitere Informationen zukommen lassen, die Sie für die Anmeldung als wichtig erachten.</label>
+                <textarea name="wichtig" id="wichtig"></textarea>
+            </div>
 
+            <h2>E-Mail-Adresse für die Bestätigung der Daten</h2>
 
+            <p>Nach Absenden des Formulars erhalten Sie eine E-Mail mit einem Link zur Bestätigungsseite.</p>
+            <p>Wichtig: Der Bestätigungslink ist nur für 48h aktiv.</p>
+            <p>Bitte geben Sie hier die E-Mail-Adresse ein, an die der Bestätigungslink geschickt werden soll.</p>
+
+            <div class="feld">
+                <label for="bestaetigungslink">E-Mail Bestätigungslink *</label>
+                <input type="email" id="bestaetigungslink" name="bestaetigungslink" aria-describedby="info-bestaetigungslink" inputmode="email">
+                <input type="email" id="bestaetigungslinkwdh" name="bestaetigungslinkwdh" placeholder="E-Mail Bestätigungslink wiederholen..." aria-label="E-Mail Bestätigungslink wiederholen" inputmode="email">
+                <p class="info" id="info-bestaetigungslink">An diese E-Mail-Adresse wird der Bestätigungslink versandt - bitte überprüfen Sie die richtige Schreibweise. Pflichtfeld. &#9432;</p>
+            </div>
 
             <div class="feld checkbox">
-                <input type="checkbox" id="zustimmung">
+                <input type="checkbox" id="zustimmung" name="zustimmung" required>
                 <label for="zustimmung">Ich stimme der Speicherung meiner Daten zu</label>
             </div>
 
             <button type="button" id="checkBtn">Was fehlt noch?</button>
             <button type="submit" id="submitBtn" disabled>Absenden</button>
         </form>
-
-        <div id="statusAusgabe"></div>
     </div>
 
     <script src="main.js"></script>

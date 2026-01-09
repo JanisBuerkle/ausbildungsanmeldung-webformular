@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!el) return;
     el.classList.add("error");
     el.style.borderColor = "red";
-    el.style.backgroundColor = "#ffe5e5";
+    el.style.backgroundColor = "";
   }
 
   function setValid(el) {
@@ -189,3 +189,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
   updateSubmitState();
 });
+

@@ -81,7 +81,7 @@ function getOrCreateAusbilder(
 }
 
 // ==================
-// Pflichtfelder prüfen
+// Pflichtfelder
 // ==================
 $required = [
     'ausbildungsberuf',
@@ -89,15 +89,19 @@ $required = [
     'ausbildername',
     'ausbildergeschlecht',
     'ausbilderemail',
+    'ausbilderemailwdh',
     'ausbildertelefon',
-    'familienname',
-    'vorname',
-    'geburtsdatum',
     'ausbildungsbeginn',
     'ausbildungsende',
     'ausbildungsdauer',
+    'selbeklasse',
+    'familienname',
+    'vorname',
     'warbsz',
-    'selbeklasse'
+    'geburtsdatum',
+    'bestaetigungslink',
+    'bestaetigungslinkwdh',
+    'zustimmung'
 ];
 
 foreach ($required as $feld) {
@@ -107,19 +111,31 @@ foreach ($required as $feld) {
 }
 
 // ==================
-// Werte aufbereiten
+// E-Mail Wiederholung prüfen
 // ==================
-$berufMapping = [
+if ($_POST['ausbilderemail'] !== $_POST['ausbilderemailwdh']) {
+    abort("Ausbilder-E-Mail stimmt nicht überein");
+}
+
+if ($_POST['bestaetigungslink'] !== $_POST['bestaetigungslinkwdh']) {
+    abort("Bestätigungs-E-Mail stimmt nicht überein");
+}
+
+// ==================
+// Mapping & Werte
+// ==================
+$berufMap = [
     'elektroniker' => 1,
     'fianwendung'  => 2,
     'fisystem'     => 3,
     'mechatroniker'=> 4
 ];
 
-if (!isset($berufMapping[$_POST['ausbildungsberuf']])) {
+if (!isset($berufMap[$_POST['ausbildungsberuf']])) {
     abort("Ungültiger Ausbildungsberuf");
 }
-$beruf_id = $berufMapping[$_POST['ausbildungsberuf']];
+
+$beruf_id = $berufMap[$_POST['ausbildungsberuf']];
 
 $betrieb_name  = trim($_POST['ausbildungsbetrieb']);
 $ausbildername = trim($_POST['ausbildername']);
@@ -143,9 +159,11 @@ $vorname      = trim($_POST['vorname']);
 $war_bsz     = $_POST['warbsz'] === 'ja' ? 1 : 0;
 $selbeKlasse = $_POST['selbeklasse'] === 'ja' ? 1 : 0;
 
-// Month → DATE
 $beginn = $_POST['ausbildungsbeginn'] . "-01";
 $ende   = $_POST['ausbildungsende'] . "-01";
+
+$weitere_infos = trim($_POST['wichtig'] ?? null);
+$email_bestaetigung = trim($_POST['bestaetigungslink']);
 
 // ==================
 // TRANSAKTION
@@ -195,15 +213,24 @@ try {
     $azubi_id = $stmt->insert_id;
     $stmt->close();
 
-    // Meta
-    $bestaetigungslink = bin2hex(random_bytes(32));
+    // Dokumente (weitere Infos)
+    if (!empty($weitere_infos)) {
+        $stmt = $mysqli->prepare("
+            INSERT INTO dokumente (azubi_id, weitere_infos)
+            VALUES (?,?)
+        ");
+        $stmt->bind_param("is", $azubi_id, $weitere_infos);
+        $stmt->execute();
+        $stmt->close();
+    }
 
+    // Meta
     $stmt = $mysqli->prepare("
         INSERT INTO eingaben_meta
-        (azubi_id, email_bestaetigung, bestaetigungslink, datenschutz_zustimmung)
-        VALUES (?,?,?,1)
+        (azubi_id, email_bestaetigung, datenschutz_zustimmung)
+        VALUES (?,?,1)
     ");
-    $stmt->bind_param("iss", $azubi_id, $email, $bestaetigungslink);
+    $stmt->bind_param("is", $azubi_id, $email_bestaetigung);
     $stmt->execute();
     $stmt->close();
 
@@ -217,7 +244,8 @@ try {
 } catch (Exception $e) {
     $mysqli->rollback();
     http_response_code(500);
-    echo json_encode(["error" => "Speichern fehlgeschlagen"]);
+    echo json_encode(["error" => "Fehler beim Speichern"]);
 }
 
 $mysqli->close();
+

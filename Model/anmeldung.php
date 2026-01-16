@@ -1,5 +1,4 @@
 <?php
-header('Content-Type: application/json');
 
 // ==================
 // DB Verbindung
@@ -7,7 +6,7 @@ header('Content-Type: application/json');
 $mysqli = new mysqli("localhost", "root", "", "ausbildungs_anmeldung");
 if ($mysqli->connect_error) {
     http_response_code(500);
-    echo json_encode(["error" => "DB-Verbindung fehlgeschlagen"]);
+    echo "DB-Verbindung fehlgeschlagen";
     exit;
 }
 
@@ -18,7 +17,7 @@ $mysqli->set_charset("utf8");
 // ==================
 function abort($msg, $code = 400) {
     http_response_code($code);
-    echo json_encode(["error" => $msg]);
+    echo $msg;
     exit;
 }
 
@@ -51,7 +50,6 @@ function getOrCreateAusbilder(
     string $email,
     string $telefon
 ): int {
-
     $stmt = $db->prepare("
         SELECT ausbilder_id
         FROM ausbilder
@@ -84,24 +82,12 @@ function getOrCreateAusbilder(
 // Pflichtfelder
 // ==================
 $required = [
-    'ausbildungsberuf',
-    'ausbildungsbetrieb',
-    'ausbildername',
-    'ausbildergeschlecht',
-    'ausbilderemail',
-    'ausbilderemailwdh',
-    'ausbildertelefon',
-    'ausbildungsbeginn',
-    'ausbildungsende',
-    'ausbildungsdauer',
-    'selbeklasse',
-    'familienname',
-    'vorname',
-    'warbsz',
-    'geburtsdatum',
-    'bestaetigungslink',
-    'bestaetigungslinkwdh',
-    'zustimmung'
+    'ausbildungsberuf','ausbildungsbetrieb','ausbildername',
+    'ausbildergeschlecht','ausbilderemail','ausbilderemailwdh',
+    'ausbildertelefon','ausbildungsbeginn','ausbildungsende',
+    'ausbildungsdauer','selbeklasse','familienname','vorname',
+    'warbsz','geburtsdatum','bestaetigungslink',
+    'bestaetigungslinkwdh','zustimmung'
 ];
 
 foreach ($required as $feld) {
@@ -111,7 +97,7 @@ foreach ($required as $feld) {
 }
 
 // ==================
-// E-Mail Wiederholung prüfen
+// Eingabe prüfen
 // ==================
 if ($_POST['ausbilderemail'] !== $_POST['ausbilderemailwdh']) {
     abort("Ausbilder-E-Mail stimmt nicht überein");
@@ -122,7 +108,7 @@ if ($_POST['bestaetigungslink'] !== $_POST['bestaetigungslinkwdh']) {
 }
 
 // ==================
-// Mapping & Werte
+
 // ==================
 $berufMap = [
     'elektroniker' => 1,
@@ -135,13 +121,6 @@ if (!isset($berufMap[$_POST['ausbildungsberuf']])) {
     abort("Ungültiger Ausbildungsberuf");
 }
 
-$beruf_id = $berufMap[$_POST['ausbildungsberuf']];
-
-$betrieb_name  = trim($_POST['ausbildungsbetrieb']);
-$ausbildername = trim($_POST['ausbildername']);
-$email         = trim($_POST['ausbilderemail']);
-$telefon       = trim($_POST['ausbildertelefon']);
-
 $geschlechtMap = [
     'maennlich' => 'm',
     'weiblich'  => 'w',
@@ -151,41 +130,39 @@ $geschlechtMap = [
 if (!isset($geschlechtMap[$_POST['ausbildergeschlecht']])) {
     abort("Ungültiges Geschlecht");
 }
+
+// ==================
+
+// ==================
+$beruf_id   = $berufMap[$_POST['ausbildungsberuf']];
+$betrieb    = trim($_POST['ausbildungsbetrieb']);
+$name       = trim($_POST['ausbildername']);
+$email      = trim($_POST['ausbilderemail']);
+$telefon    = trim($_POST['ausbildertelefon']);
 $geschlecht = $geschlechtMap[$_POST['ausbildergeschlecht']];
 
 $familienname = trim($_POST['familienname']);
 $vorname      = trim($_POST['vorname']);
-
-$war_bsz     = $_POST['warbsz'] === 'ja' ? 1 : 0;
-$selbeKlasse = $_POST['selbeklasse'] === 'ja' ? 1 : 0;
+$war_bsz      = $_POST['warbsz'] === 'ja' ? 1 : 0;
+$selbeKlasse  = $_POST['selbeklasse'] === 'ja' ? 1 : 0;
 
 $beginn = $_POST['ausbildungsbeginn'] . "-01";
 $ende   = $_POST['ausbildungsende'] . "-01";
 
-$weitere_infos = trim($_POST['wichtig'] ?? null);
+$weitere_infos = trim($_POST['wichtig'] ?? '');
 $email_bestaetigung = trim($_POST['bestaetigungslink']);
 
 // ==================
-// TRANSAKTION
+
 // ==================
 $mysqli->begin_transaction();
 
 try {
-
-    // Betrieb
-    $betrieb_id = getOrCreateBetrieb($mysqli, $betrieb_name);
-
-    // Ausbilder
+    $betrieb_id = getOrCreateBetrieb($mysqli, $betrieb);
     $ausbilder_id = getOrCreateAusbilder(
-        $mysqli,
-        $betrieb_id,
-        $ausbildername,
-        $geschlecht,
-        $email,
-        $telefon
+        $mysqli, $betrieb_id, $name, $geschlecht, $email, $telefon
     );
 
-    // Azubi
     $stmt = $mysqli->prepare("
         INSERT INTO auszubildende
         (beruf_id, betrieb_id, ausbilder_id,
@@ -196,25 +173,17 @@ try {
 
     $stmt->bind_param(
         "iiississsss",
-        $beruf_id,
-        $betrieb_id,
-        $ausbilder_id,
-        $familienname,
-        $vorname,
-        $war_bsz,
-        $_POST['geburtsdatum'],
-        $beginn,
-        $ende,
-        $_POST['ausbildungsdauer'],
-        $selbeKlasse
+        $beruf_id, $betrieb_id, $ausbilder_id,
+        $familienname, $vorname, $war_bsz,
+        $_POST['geburtsdatum'], $beginn, $ende,
+        $_POST['ausbildungsdauer'], $selbeKlasse
     );
 
     $stmt->execute();
     $azubi_id = $stmt->insert_id;
     $stmt->close();
 
-    // Dokumente (weitere Infos)
-    if (!empty($weitere_infos)) {
+    if ($weitere_infos !== '') {
         $stmt = $mysqli->prepare("
             INSERT INTO dokumente (azubi_id, weitere_infos)
             VALUES (?,?)
@@ -224,7 +193,6 @@ try {
         $stmt->close();
     }
 
-    // Meta
     $stmt = $mysqli->prepare("
         INSERT INTO eingaben_meta
         (azubi_id, email_bestaetigung, datenschutz_zustimmung)
@@ -235,16 +203,12 @@ try {
     $stmt->close();
 
     $mysqli->commit();
-
-    echo json_encode([
-        "success" => true,
-        "azubi_id" => $azubi_id
-    ]);
+    echo "Anmeldung erfolgreich gespeichert (Azubi-ID: $azubi_id)";
 
 } catch (Exception $e) {
     $mysqli->rollback();
     http_response_code(500);
-    echo json_encode(["error" => "Fehler beim Speichern"]);
+    echo "Fehler beim Speichern";
 }
 
 $mysqli->close();
